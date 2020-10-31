@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "975614607098",
+    "firebase_url": "https://recordroom-f0567.firebaseio.com",
+    "project_id": "recordroom-f0567",
+    "storage_bucket": "recordroom-f0567.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975614607098:android:5be25da72aebda45b0d343",
+        "android_client_info": {
+          "package_name": "com.example.recoed_room"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975614607098-qg8for2eh3hqpoo6o5cifqefs9pfuj9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB31w9dyoxTz9oUl-bXR-4Nv393UXLjdxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975614607098-qg8for2eh3hqpoo6o5cifqefs9pfuj9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975614607098:android:986d70cfec0bce60b0d343",
+        "android_client_info": {
+          "package_name": "com.example.recordroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975614607098-qg8for2eh3hqpoo6o5cifqefs9pfuj9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB31w9dyoxTz9oUl-bXR-4Nv393UXLjdxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975614607098-qg8for2eh3hqpoo6o5cifqefs9pfuj9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    tools:context=".SignupActivity"
+
+    android:orientation="vertical">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="아이디: "/>
+
+            <EditText
+                android:id="@+id/ed_id"
+                android:layout_span="2"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/searchId_btn"
+                android:text="아이디 중복확인"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="비밀번호: " />
+            <EditText
+                android:id="@+id/ed_password1"
+                android:layout_span="3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="비밀번호 재입력: "/>
+
+            <EditText
+                android:id="@+id/ed_password2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_span="3"
+                android:inputType="textPassword"/>
+
+        </TableRow>
+
+        <TableRow>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="이름: "/>
+            <EditText
+                android:id="@+id/ed_name"
+                android:layout_width="match_parent"
+                android:layout_span="3"
+                android:layout_height="match_parent"/>
+        </TableRow>
+
+        <TableRow>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="이메일: "/>
+
+            <EditText
+                android:id="@+id/ed_email"
+                android:layout_width="103dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=" @" />
+            <Spinner
+                android:id="@+id/addressSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:entries="@array/이메일주소"
+
+            />
+        </TableRow>
+
+    </TableLayout>
+
+
+
+
+
+    <Button
+        android:id="@+id/singup_btn"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:text="가입"
+        android:background="@drawable/btn_color"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>
