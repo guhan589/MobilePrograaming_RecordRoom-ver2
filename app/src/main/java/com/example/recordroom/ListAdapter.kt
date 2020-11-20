@@ -23,7 +23,10 @@ class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
         val view = LayoutInflater.from(context).inflate(R.layout.item_list,null)
 
         val titleView = view.findViewById<TextView>(R.id.list_text)
-        val deleteBtn = view.findViewById<Button>(R.id.list_text)
+        val deleteBtn = view.findViewById<Button>(R.id.deleteBtn)
+
+        val room = list[position]
+        titleView.text = room.title
         return view
     }
 
@@ -36,7 +39,7 @@ class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
     }
 
     override fun getCount(): Int {
-        TODO("Not yet implemented")
+        return list.size
     }
 
 

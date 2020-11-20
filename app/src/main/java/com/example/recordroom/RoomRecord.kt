@@ -1,5 +1,5 @@
 package com.example.recordroom
 
-class RoomRecord(titla:String, address:String, latitude:String, longitude:String) {
+class RoomRecord(val title:String, val address:String, val latitude:String, val longitude:String) {
 
 }

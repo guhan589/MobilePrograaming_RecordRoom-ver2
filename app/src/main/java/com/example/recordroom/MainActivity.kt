@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity() {
         toolbar.setTitle("")
         setSupportActionBar(toolbar)
 
-
+        data.add(RoomRecord("a","b","c","d"))
         val adapter = ListAdapter(this,data)
+        adapter.notifyDataSetChanged()
         listView.adapter = adapter
 
     }
