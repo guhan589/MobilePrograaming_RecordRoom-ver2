@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RecordRoom">
-        <activity android:name=".Messagepop.MessageActivity"
+        <activity android:name=".function.MessageActivity"
             android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />

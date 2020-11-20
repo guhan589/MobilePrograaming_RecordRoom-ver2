@@ -1,7 +1,6 @@
 package com.example.recordroom
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.recordroom.Messagepop.MessageActivity
+import com.example.recordroom.function.MessageActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -32,8 +31,8 @@ class SignupActivity : AppCompatActivity() {
 
         searchId_btn.setOnClickListener{ //중복ID 버튼
             //searchId_state =true//중복로그인 상태 유무
-            userId = ed_id.text.toString()
-            search_id(userId)
+            userId = ed_id.text.toString()//사용자가 입력한 ID값을 가져온다.
+            search_id(userId) // 등록된 ID 리스트에 중복이 되는지 확인
         }
         singup_btn.setOnClickListener{ //회원가입 버튼
 
@@ -61,7 +60,7 @@ class SignupActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                when(addressSpinner.getItemAtPosition(position)){
+                when(addressSpinner.getItemAtPosition(position)){//이메일 spinner에서 사용자가 선택한 이메일에 대한 값을 editText에 기재
                     "naver.com"->{
                         user_mailad = "naver.com"
                     }
@@ -88,8 +87,9 @@ class SignupActivity : AppCompatActivity() {
          if (requestCode == REQUEST_TEST) {
             if (resultCode == RESULT_OK) {
                 val value = data?.getStringExtra("result")
-                if(value.equals("ok")){
-                    ed_id.isEnabled = false
+                if(value.equals("ok")){ //
+                    ed_id.isEnabled = false //사용자 id 수정 불가능
+                    searchId_btn.isEnabled = false //아이디 중복검사 사용불가능
                 }
                 //show("Result: " + data?.getStringExtra("result"))
             } else {   // RESULT_CANCEL
@@ -127,7 +127,7 @@ class SignupActivity : AppCompatActivity() {
 
         return state
     }
-    fun search_id(id:String){
+    fun search_id(id:String){//id중복검사
         val database = Firebase_connection().getInstance()
         val table_user: DatabaseReference? = database?.getReference()?.child("User")
         table_user?.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -151,7 +151,7 @@ class SignupActivity : AppCompatActivity() {
                 }else{
                     val intent = Intent(applicationContext, MessageActivity::class.java)
                     intent.putExtra("state",!status)
-                    intent.putExtra("data", " 사용가능한 ID입니다. \n\n 사용하시겠습니까?")
+                    intent.putExtra("data", " 사용가능한 ID입니다. \n\n $id 를 사용하시겠습니까?")
                     startActivityForResult(intent, 1)
                 }
             }

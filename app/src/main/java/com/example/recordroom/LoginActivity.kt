@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.recordroom.model.SharedUserData
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
-import java.util.*
 
 
 /**
@@ -15,40 +15,32 @@ import java.util.*
  * 사용자 회원가입 및 회원 정보 찾기(아이디, 비밀번호)
  *
  * **/
-class LoginActivity : AppCompatActivity() {
+public class LoginActivity : AppCompatActivity() {
 
     private lateinit var user_id:String
     private lateinit var user_pw:String
 
+    private lateinit var sharedUserData: SharedUserData
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-      /*  val database1 = Firebase_connection("guhan589","@ajk124877","권구환","guhan589@naver.com")
-        database1.singupUser()
 
 
-        val database2 = Firebase_connection("rnjsrn589","@ajk124877","권구환","guhan589@naver.com")
-        database2.singupUser()*/
+        val stored_id = SharedUserData(this).getisStroe_id()
+        if(stored_id) {
+            ed_userId.setText(SharedUserData(this).getUser_id())//아이디 필드란에 저장된 id값 띄우기
+            storeid_btn.isChecked=true
+        }
 
         login_btn.setOnClickListener{//사용자가 로그인 버튼을 누를시 활성화
             user_id = ed_userId.text.toString()
             user_pw = ed_userPw.text.toString()
 
             val status = search_space(user_id,user_pw)
-            if(status){//아이디 비밀번호 입력이 모두 입력하였을 경우
-
-
-                /*val database1 = Firebase_connection()
-                database1.getUser(user_id,user_pw)*/
-                //val databases = Firebase_connection().getInstance()
-                Log.d("TAG", "status: "+status)
-                Log.d("TAG", "login(): ")
+            if(status)//아이디 비밀번호 입력이 모두 입력하였을 경우
                 login(user_id,user_pw)
 
-
-
-            }
         }
         singupTextview.setOnClickListener{//회원가입 버튼
             val singupIntent = Intent(this,SignupActivity::class.java)
@@ -56,10 +48,24 @@ class LoginActivity : AppCompatActivity() {
         }
 
         findTextView.setOnClickListener{//아이디 비빌번호찾기
-            
+
         }
 
+        autologin_btn.setOnClickListener{//자동로그인 체크박스 이벤트처리
+            if(autologin_btn.isChecked){
+                storeid_btn.isChecked=false
+            }
+        }
 
+        storeid_btn.setOnClickListener{
+            if(storeid_btn.isChecked){
+                if(autologin_btn.isChecked) {
+                    show("자동로그인이 선택된 경우 아이디 저장이 불가합니다.")
+                    storeid_btn.isChecked = false
+                }
+
+            }
+        }
 
 
 
@@ -120,6 +126,16 @@ class LoginActivity : AppCompatActivity() {
 
                 if(intentState){//계정이 있을경우 MainActivity으로 이동
                     show("로그인 승인이 되었습니다.")
+                    if(autologin_btn.isChecked){//자동로그인
+                        SharedUserData(this@LoginActivity)
+                            .setUserAuto(id,pwd,true)//아이디,패스워드, 상태저장
+
+
+                    }else if(storeid_btn.isChecked){
+                        SharedUserData(this@LoginActivity)
+                            .setUserId(id,true) //아이디와 상태 저장
+
+                    }
                     val mainIntent = Intent(applicationContext,MainActivity::class.java)
                     Log.d("TAG", "onDataChange_name: "+name)
                     mainIntent.putExtra("name",name)

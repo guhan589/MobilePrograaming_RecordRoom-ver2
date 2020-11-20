@@ -1,7 +1,6 @@
 package com.example.recordroom
 
-import android.content.Intent
-import android.util.Log
+import com.example.recordroom.model.UserDto
 import com.google.firebase.database.*
 
 class Firebase_connection{
@@ -33,7 +32,7 @@ class Firebase_connection{
 
     fun singupUser():Boolean {//회원가입
         myRef = database!!.getReference("User")
-        myRef?.child(id)?.setValue(UserDto(passwd,name, email))
+        myRef?.child(id)?.setValue(UserDto(passwd, name, email))
 
         return true
     }

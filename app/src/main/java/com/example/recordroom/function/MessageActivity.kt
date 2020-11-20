@@ -1,4 +1,4 @@
-package com.example.recordroom.Messagepop
+package com.example.recordroom.function
 
 import android.app.Activity
 import android.content.Intent
@@ -7,14 +7,10 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
-import com.example.recordroom.SignupActivity
 import kotlinx.android.synthetic.main.activity_message.*
-import kotlinx.android.synthetic.main.activity_signup.*
 
-class MessageActivity : Activity() {
+class MessageActivity : Activity() { //아이디 중복 검사시 사용가능 여부 메시지를 팝업형태로 띄움
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +24,10 @@ class MessageActivity : Activity() {
         val intent = intent
         val state = intent.getBooleanExtra("state",false)
         Log.d("TAG", "onCreate_state: "+state)
-        if(state) {
+        if(state) { //사용 가능한 ID일시 메시지
             title_textview.setText("ID사용가능")
             useId_btn.visibility = View.VISIBLE //사용하기 버튼 활성화
+            cancel_Btn.visibility = View.GONE
         }
         val data = intent.getStringExtra("data")
         txtText!!.text = data

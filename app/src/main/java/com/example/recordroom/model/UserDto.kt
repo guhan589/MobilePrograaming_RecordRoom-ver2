@@ -1,4 +1,4 @@
-package com.example.recordroom
+package com.example.recordroom.model
 
 import com.google.firebase.database.IgnoreExtraProperties
 
