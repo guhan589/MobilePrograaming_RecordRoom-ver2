@@ -37,7 +37,7 @@ public class LoginActivity : AppCompatActivity() {
             user_id = ed_userId.text.toString()
             user_pw = ed_userPw.text.toString()
 
-            val status = search_space(user_id,user_pw)
+            val status = search_space(user_id,user_pw)// 아이디와 비밀번호가 모두 입력되었는지 확인
             if(status)//아이디 비밀번호 입력이 모두 입력하였을 경우
                 login(user_id,user_pw)
 
@@ -140,6 +140,7 @@ public class LoginActivity : AppCompatActivity() {
                     Log.d("TAG", "onDataChange_name: "+name)
                     mainIntent.putExtra("name",name)
                     startActivity(mainIntent)
+                    finish()
                 }else
                     show("계정이 존재하지 않습니다.")
 

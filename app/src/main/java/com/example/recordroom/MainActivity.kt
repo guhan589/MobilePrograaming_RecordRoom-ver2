@@ -31,10 +31,19 @@ class MainActivity : AppCompatActivity() {
         toolbar.setTitle("")
         setSupportActionBar(toolbar)
 
-        data.add(RoomRecord("a","b","c","d"))
+        data.add(RoomRecord("0","0","0","d"))
+        data.add(RoomRecord("1","0","0","d"))
+
         val adapter = ListAdapter(this,data)
-        adapter.notifyDataSetChanged()
         listView.adapter = adapter
+        adapter.notifyDataSetChanged()
+
+
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            val selectItem = parent.getItemAtPosition(position) as String
+            Log.d("TAG", "selectItem: "+selectItem)
+        }
+
 
     }
 
@@ -71,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         val alert: AlertDialog = alertdialog.create()
         alert.show()
     }
+
 
 
 }
