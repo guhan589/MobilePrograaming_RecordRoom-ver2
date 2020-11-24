@@ -61,11 +61,12 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener {
         mapView.setZoomLevel(5,true)
         Log.d("TAG", "latitude1: "+latitude)
         Log.d("TAG", "longitude1: "+longitude)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude,longitude),true)
-        val mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
+        val mapPoint = MapPoint.mapPointWithGeoCoord(latitude,longitude)
+        mapView.setMapCenterPoint(mapPoint,true)
         val marker = MapPOIItem()
         marker.mapPoint = mapPoint
         marker.tag=1
+        marker.itemName = "내위치"
         marker.markerType = MapPOIItem.MarkerType.RedPin
         mapView.addPOIItem(marker)
     }
