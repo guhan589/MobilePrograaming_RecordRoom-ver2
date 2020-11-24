@@ -10,6 +10,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
+import com.example.recordroom.UI.Login.LoginActivity
+import com.example.recordroom.function.Permission
 import com.example.recordroom.model.SharedUserData
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -24,6 +26,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         getHashKey();
+
         val auto_login = SharedUserData(this).getisAuto_login()
         if(auto_login) {//자동로그인 시
             Handler().postDelayed({

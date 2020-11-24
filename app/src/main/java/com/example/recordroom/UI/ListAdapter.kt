@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.recordroom.R
+import com.example.recordroom.function.Permission
 import kotlinx.android.synthetic.main.item_list.view.*
 
 class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
@@ -42,6 +43,7 @@ class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
             Toast.makeText(context,"리스트 삭제",Toast.LENGTH_SHORT).show()
         }
         addBtn?.setOnClickListener{
+
             Toast.makeText(context,"추가하기 ",Toast.LENGTH_SHORT).show()
             val intent = Intent(context,AddRoomActivity::class.java);
             context.startActivity(intent)

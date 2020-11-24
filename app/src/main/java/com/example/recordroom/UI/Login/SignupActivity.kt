@@ -1,4 +1,4 @@
-package com.example.recordroom.UI
+package com.example.recordroom.UI.Login
 
 import android.app.Activity
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
+import com.example.recordroom.UI.Firebase_connection
 import com.example.recordroom.function.MessageActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -56,7 +57,12 @@ class SignupActivity : AppCompatActivity() {
                 user_email =ed_email.text.toString()
                 user_email += "@$user_mailad"
                 
-                val database = Firebase_connection(userId, user_password, user_name, user_email)
+                val database = Firebase_connection(
+                    userId,
+                    user_password,
+                    user_name,
+                    user_email
+                )
                 val result = database.singupUser()
                 if(result)
                     finish()
