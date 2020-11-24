@@ -1,10 +1,11 @@
-package com.example.recordroom
+package com.example.recordroom.UI
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
+import com.example.recordroom.R
 import com.example.recordroom.model.SharedUserData
 
 class SplashActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
         }else{
             Handler().postDelayed({
 
-                val intent = Intent(this,LoginActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             },2000)
