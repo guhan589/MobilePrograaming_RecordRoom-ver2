@@ -1,4 +1,4 @@
-package com.example.recordroom
+package com.example.recordroom.UI
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -6,16 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.recordroom.R
 import com.example.recordroom.model.SharedUserData
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.appbar.view.*
+import net.daum.mf.map.api.MapView
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity() {
         Log.d("TAG", "name: "+name)
         val toolbar:Toolbar
         toolbar = appbar
-        toolbar.appbar_textView.setText("방구")
+        toolbar.appbar_textView.setText("방 구")
         toolbar.setTitle("")
         setSupportActionBar(toolbar)
 
-        data.add(RoomRecord("0","0","0","d"))
-        data.add(RoomRecord("1","0","0","d"))
+        data.add(RoomRecord("0", "0", "0", "d"))
+        data.add(RoomRecord("1", "0", "0", "d"))
 
-        val adapter = ListAdapter(this,data)
+        val adapter = ListAdapter(this, data)
         listView.adapter = adapter
         adapter.notifyDataSetChanged()
 
@@ -43,6 +43,15 @@ class MainActivity : AppCompatActivity() {
             val selectItem = parent.getItemAtPosition(position) as String
             Log.d("TAG", "selectItem: "+selectItem)
         }
+
+
+        /**
+         * 카카오 mapView 객체
+         * */
+
+        val mapview = MapView(this)
+        val mapViewContainer = map_view as ViewGroup
+        mapViewContainer.addView(mapview)
 
 
     }
@@ -56,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {//menu 이벤트 처리
 
         when(item.itemId){
-            R.id.logout_Btn->{//로그아웃 버튼 누를시
+            R.id.logout_Btn ->{//로그아웃 버튼 누를시
                 logout_dialog()
                 /*SharedUserData(this).reset()
                 finish()//엑티비티 종료*/

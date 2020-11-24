@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".UI.MainActivity">
 
     <include
         android:id="@+id/include"
@@ -12,10 +12,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<com.google.android.gms.maps.MapView
+            android:id="@+id/hos_map_view"
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            tools:layout_editor_absoluteX="-96dp"
+            tools:layout_editor_absoluteY="35dp"/>-->
+
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="0dp"
         android:layout_height="612dp"
+        android:divider="#000000"
+        android:dividerHeight="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -27,7 +27,7 @@ class MessageActivity : Activity() { //아이디 중복 검사시 사용가능 �
         if(state) { //사용 가능한 ID일시 메시지
             title_textview.setText("ID사용가능")
             useId_btn.visibility = View.VISIBLE //사용하기 버튼 활성화
-            cancel_Btn.visibility = View.GONE
+            //cancel_Btn.visibility = View.GONE //취소버튼 비활성화
         }
         val data = intent.getStringExtra("data")
         txtText!!.text = data

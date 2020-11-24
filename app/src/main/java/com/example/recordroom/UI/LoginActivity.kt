@@ -1,10 +1,11 @@
-package com.example.recordroom
+package com.example.recordroom.UI
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.recordroom.R
 import com.example.recordroom.model.SharedUserData
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
@@ -43,7 +44,7 @@ public class LoginActivity : AppCompatActivity() {
 
         }
         singupTextview.setOnClickListener{//회원가입 버튼
-            val singupIntent = Intent(this,SignupActivity::class.java)
+            val singupIntent = Intent(this, SignupActivity::class.java)
             startActivity(singupIntent)
         }
 
@@ -136,7 +137,7 @@ public class LoginActivity : AppCompatActivity() {
                             .setUserId(id,true) //아이디와 상태 저장
 
                     }
-                    val mainIntent = Intent(applicationContext,MainActivity::class.java)
+                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
                     Log.d("TAG", "onDataChange_name: "+name)
                     mainIntent.putExtra("name",name)
                     startActivity(mainIntent)

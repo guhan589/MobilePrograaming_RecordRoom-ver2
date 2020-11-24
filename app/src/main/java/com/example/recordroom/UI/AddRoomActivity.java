@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.recordroom.R;
+
 public class AddRoomActivity extends AppCompatActivity {
 
     @Override

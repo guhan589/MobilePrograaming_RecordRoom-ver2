@@ -1,20 +1,16 @@
-package com.example.recordroom
+package com.example.recordroom.UI
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
-import android.util.Log
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.res.ComplexColorCompat.inflate
+import com.example.recordroom.R
 import kotlinx.android.synthetic.main.item_list.view.*
-import org.w3c.dom.Text
 
 class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
 
@@ -47,6 +43,8 @@ class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
         }
         addBtn?.setOnClickListener{
             Toast.makeText(context,"추가하기 ",Toast.LENGTH_SHORT).show()
+            val intent = Intent(context,AddRoomActivity::class.java);
+            context.startActivity(intent)
         }
         return view
     }

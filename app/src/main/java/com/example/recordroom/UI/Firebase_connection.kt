@@ -1,10 +1,13 @@
-package com.example.recordroom
+package com.example.recordroom.UI
 
 import com.example.recordroom.model.UserDto
 import com.google.firebase.database.*
 
 class Firebase_connection{
 
+    /**
+     * 파이어베이스 연동 및 데이터 setter getter
+     * **/
     var database : FirebaseDatabase? = null
     var myRef : DatabaseReference?=null
     lateinit var id:String

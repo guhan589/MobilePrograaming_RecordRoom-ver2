@@ -17,6 +17,10 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_signup.*
 
 class SignupActivity : AppCompatActivity() {
+
+    /**
+     * 사용자의 새로운 계정을 등록하기 위한 엑티비티
+     * **/
     lateinit var userId:String//사용자 id
     lateinit var user_password:String //사용자 패스워드
     lateinit var user_name:String //사용자 이름
@@ -33,7 +37,11 @@ class SignupActivity : AppCompatActivity() {
         searchId_btn.setOnClickListener{ //중복ID 버튼
             //searchId_state =true//중복로그인 상태 유무
             userId = ed_id.text.toString()//사용자가 입력한 ID값을 가져온다.
-            search_id(userId) // 등록된 ID 리스트에 중복이 되는지 확인
+            Log.d("userId", "userId: "+userId)
+            if(!userId.equals(""))
+                search_id(userId) // 등록된 ID 리스트에 중복이 되는지 확인
+            else
+                show("아이디를 입력하세요.");
         }
         singup_btn.setOnClickListener{ //회원가입 버튼
 
