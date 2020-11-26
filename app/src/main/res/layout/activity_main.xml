@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/conBtn"
+        android:text="버튼"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <RelativeLayout
         android:id="@+id/map_view"
         android:layout_width="match_parent"

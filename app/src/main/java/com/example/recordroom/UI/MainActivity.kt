@@ -3,21 +3,25 @@ package com.example.recordroom.UI
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.recordroom.R
 import com.example.recordroom.function.Permission
 import com.example.recordroom.model.SharedUserData
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.appbar.view.*
 import net.daum.mf.map.api.MapView
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,7 +50,8 @@ class MainActivity : AppCompatActivity() {
 
        // initMapview();// mapview생성
 
-        
+
+        val db = FirebaseFirestore.getInstance()
         val adapter = ListAdapter(this, data)
         listView.adapter = adapter
         adapter.notifyDataSetChanged()
@@ -58,7 +63,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
+        val user: MutableMap<String, Any> =
+            HashMap()
+        user["first"] = "Ada"
+        user["last"] = "Lovelace"
+        user["born"] = 1815
+        conBtn.setOnClickListener{
+            db.collection("user1").add(user)
+                .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
+                    Log.d(
+                        "TAG",
+                        "onSuccess: " + documentReference.id
+                    )
+                })
+                .addOnFailureListener(OnFailureListener { })
+        }
 
     }
 
