@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
 import com.example.recordroom.UI.Firebase_connection
-import com.example.recordroom.UI.MainActivity
+import com.example.recordroom.UI.HomeActivity
 import com.example.recordroom.model.SharedUserData
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
@@ -139,7 +139,7 @@ public class LoginActivity : AppCompatActivity() {
                             .setUserId(id,true) //아이디와 상태 저장
 
                     }
-                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
+                    val mainIntent = Intent(applicationContext, HomeActivity::class.java)
                     Log.d("TAG", "onDataChange_name: "+name)
                     mainIntent.putExtra("name",name)
                     startActivity(mainIntent)

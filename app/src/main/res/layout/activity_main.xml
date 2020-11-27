@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.MainActivity">
+    tools:context=".UI.HomeActivity">
 
     <include
         android:id="@+id/include"
@@ -18,6 +18,13 @@
         android:text="버튼"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/conBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="버튼2"
+        />
+
     <RelativeLayout
         android:id="@+id/map_view"
         android:layout_width="match_parent"

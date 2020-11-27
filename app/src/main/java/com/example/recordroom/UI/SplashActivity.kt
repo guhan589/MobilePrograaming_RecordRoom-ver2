@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
 import com.example.recordroom.UI.Login.LoginActivity
-import com.example.recordroom.function.Permission
 import com.example.recordroom.model.SharedUserData
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -31,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
         if(auto_login) {//자동로그인 시
             Handler().postDelayed({
                 Toast.makeText(this,"자동로그인이 되었습니다.",Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)//mainActivity으로 이동
+                val intent = Intent(this, HomeActivity::class.java)//mainActivity으로 이동
                 startActivity(intent)
                 finish()
             },2000)

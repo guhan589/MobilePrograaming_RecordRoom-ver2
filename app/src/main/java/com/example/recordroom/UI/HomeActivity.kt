@@ -24,7 +24,7 @@ import net.daum.mf.map.api.MapView
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     var data = arrayListOf<RoomRecord>()
     lateinit var mapView: MapView
     lateinit var mapViewContainer:ViewGroup
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         user["last"] = "Lovelace"
         user["born"] = 1815
         conBtn.setOnClickListener{
-            db.collection("user1").add(user)
+            db.collection("user").add(user)
                 .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
                     Log.d(
                         "TAG",
