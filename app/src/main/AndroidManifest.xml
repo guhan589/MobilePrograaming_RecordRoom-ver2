@@ -17,8 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecordRoom"
         android:usesCleartextTraffic="true">
-        <activity android:name=".function.WriteRemarkActivity"
-            android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".UI.RatingBottomDialogFragment"></activity>
+        <activity
+            android:name=".function.WriteRemarkActivity"
+            android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".UI.AddRoomActivity" />
         <activity
             android:name=".function.MessageActivity"

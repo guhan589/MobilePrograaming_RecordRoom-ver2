@@ -17,7 +17,7 @@ class Permission (val activity: Activity){
         Manifest.permission.ACCESS_NETWORK_STATE)
 
 
-    fun checkPermissions() {
+     fun checkPermissions() {
         //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
         var rejectedPermissionList = ArrayList<String>()
 
