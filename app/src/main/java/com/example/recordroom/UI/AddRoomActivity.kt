@@ -1,32 +1,28 @@
 package com.example.recordroom.UI
 
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
 import com.example.recordroom.function.GpsManager
-import com.example.recordroom.function.MessageActivity
-import com.example.recordroom.function.WriteRemarkActivity
 import com.example.recordroom.model.SharedUserData
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_add_room.*
-import kotlinx.android.synthetic.main.activity_signup.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
-import java.util.HashMap
+
 
 class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener {
+    
+    /**
+     * 방추가하기
+     * **/
     //var data = arrayListOf<RoomRecord>()
     lateinit var mapView: MapView
     lateinit var mapViewContainer:ViewGroup
@@ -38,11 +34,11 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener {
         setContentView(R.layout.activity_add_room)
 
 
-        initMapview();//지도 생성
+        //initMapview();//지도 생성
 
         val gpsManager = GpsManager(this) // GPS 모듈 통신 
-        latitude = gpsManager.getLatitude()!!//경도
-        longitude = gpsManager.getLongitude()!!//위도
+        //latitude = gpsManager.getLatitude()!!//경도
+        //longitude = gpsManager.getLongitude()!!//위도
         Log.d("TAG", "latitude: " + latitude)
         Log.d("TAG", "longitude: " + longitude)
 
@@ -53,21 +49,24 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener {
         }
         Log.d("TAG", "user_id: " + user_id)
 
+       /* val bottomDialog = findViewById<LinearLayout>(R.id.bottomSheet)
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomDialog)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_DRAGGING*/
         btn.setOnClickListener {
-            val dialog = RatingBottomDialogFragment().getInstance()
+            val bottomSheetDialog = RatingBottomDialogFragment().getInstance()
             //dialog.setContentView(R.layout.fragment_rating_bottom_dialog)
-            /*dialog.setOnCancelListener {
-            }*/
-
             //dialog.setCanceledOnTouchOutside(true)
             //dialog.create()
-            dialog?.show(getSupportFragmentManager(),"bottomSheet")
+            bottomSheetDialog?.show(getSupportFragmentManager(),"bottomSheet")
+
 
 
             /*val sheetBehavior: BottomSheetBehavior<LinearLayout> = BottomSheetBehavior.from(bottomSheet)
             sheetBehavior.isFitToContents = true // the default
             sheetBehavior.peekHeight = 200*/
         }
+
+
         /*sremarkText.setOnClickListener{
             val intent = Intent(applicationContext, WriteRemarkActivity::class.java)
             startActivityForResult(intent, 1)
@@ -147,7 +146,7 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener {
     }
 
     override fun onStart() {
-        createOptionMapview(mapView) //지도 이벤트 설정
+        //createOptionMapview(mapView) //지도 이벤트 설정
         super.onStart()
     }
     override fun onPause() {
