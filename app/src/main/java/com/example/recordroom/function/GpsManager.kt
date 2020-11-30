@@ -29,20 +29,20 @@ public class GpsManager(val context: Context) {
             override fun onProviderDisabled(provider: String) {}
             override fun onLocationChanged(location: Location) {
                 this@GpsManager.location = location
-                makeAddress()
+                //makeAddress()
             }
         }
 
         val networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
         if(networkLocation!=null) {
             location = networkLocation
-            makeAddress()
+            //makeAddress()
         }
 
         val gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         if(gpsLocation!=null) {
             location = gpsLocation
-            makeAddress()
+            //makeAddress()
         }
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1f, locationListener)

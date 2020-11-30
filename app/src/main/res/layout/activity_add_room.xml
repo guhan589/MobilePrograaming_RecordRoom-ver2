@@ -10,22 +10,34 @@
     <RelativeLayout
         android:id="@+id/addRoomMapview"
         android:layout_width="match_parent"
-        android:layout_height="300sp"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/btn"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/reloctionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="버튼" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="341dp"
+            android:backgroundTint="#FFFFFF"
+
+            android:src="@drawable/ic_baseline_refresh_24" />
     </RelativeLayout>
 
-    <!--    <include layout="@layout/fragment_rating_bottom_dialog" />-->
-    <include
-        android:id="@+id/include2"
-        layout="@layout/content_main" />
+<!--   <include layout="@layout/bottomsheet_dialog" />-->
+  <!--  <include
+        android:id="@+id/include"
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addRoomMapview" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

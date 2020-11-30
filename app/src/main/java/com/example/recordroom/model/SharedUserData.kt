@@ -7,6 +7,11 @@ import android.content.SharedPreferences.Editor
 import android.util.Log
 
 public class SharedUserData {
+    
+    /**
+     * 사용자의 계정 정보 값을 xml에 저장하기 위한 클래스
+     * 
+     * */
     private var activity: Activity? = null
     var loginInformtaion: SharedPreferences? = null
     var editor: Editor? = null
