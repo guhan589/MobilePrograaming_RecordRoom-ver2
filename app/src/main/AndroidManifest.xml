@@ -17,21 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecordRoom"
         android:usesCleartextTraffic="true">
-<!--        <activity android:name=".UI.Ra-"></activity>-->
+
         <activity
-            android:name=".function.WriteRemarkActivity"
+            android:name=".ui.commom.WriteRemarkActivity"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".UI.AddRoomActivity" />
+        <activity android:name=".ui.addroom.AddRoomActivity" />
         <activity
-            android:name=".function.MessageActivity"
+            android:name=".ui.commom.MessageActivity"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".UI.Login.SignupActivity" />
-        <activity android:name=".UI.HomeActivity" />
-        <activity android:name=".UI.Login.LoginActivity" />
-        <activity android:name=".UI.SplashActivity">
+        <activity android:name=".ui.login.SignupActivity" />
+        <activity android:name=".ui.home.HomeActivity" />
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

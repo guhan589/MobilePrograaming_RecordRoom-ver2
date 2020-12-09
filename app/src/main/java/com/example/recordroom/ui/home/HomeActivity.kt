@@ -1,4 +1,4 @@
-package com.example.recordroom.UI
+package com.example.recordroom.ui.home
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -11,16 +11,22 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.recordroom.R
-import com.example.recordroom.function.Permission
+import com.example.recordroom.ui.commom.Permission
 import com.example.recordroom.model.SharedUserData
+import com.example.recordroom.ui.commom.RoomRecord
+import com.example.recordroom.ui.home.ListAdapter
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.appbar.view.*
 import net.daum.mf.map.api.MapView
+import java.lang.reflect.Array
 
 
 class HomeActivity : AppCompatActivity() {
     var data = arrayListOf<RoomRecord>()
+
+    var db : FirebaseFirestore? = null
     lateinit var mapView: MapView
     lateinit var mapViewContainer:ViewGroup
 
@@ -37,15 +43,40 @@ class HomeActivity : AppCompatActivity() {
 
 
         val permission = Permission(this)
-        permission.checkPermissions()
+        permission.checkPermissions() //퍼미션 체크
 
-        data.add(RoomRecord("0", "0", "0", "d"))
-        data.add(RoomRecord("1", "0", "0", "d"))
+        /**임시 list**/
 
+        val arrayList = ArrayList<Int>()
+        arrayList.add(1)
+        arrayList.add(2)
+        arrayList.add(3)
+
+
+        /**
+         * fireStore 내용가져오기
+         * */
+
+        db = FirebaseFirestore.getInstance()
+        val userid = SharedUserData(this).getUser_id()
+        db!!.collection(userid!!).get().addOnSuccessListener { result  -> //컬렉션의 모든 문서 보기
+            for (document in result ) {
+                Log.d("TAG", "${document.id} => ${document.data}")
+            }
+        }
+            .addOnFailureListener { exception ->
+                Log.w("TAG", "Error getting documents: ", exception)
+            }
+
+
+        /**
+         * data 하나를 더 추가해서 0번째에 추가하기 버튼을 만들어야함
+         * **/
+        data.add(RoomRecord("q","w","e","r",arrayList))
+        data.add(RoomRecord("q","w","e","r",arrayList))
+        data.add(RoomRecord("a","s","d","f",arrayList))
 
        // initMapview();// mapview생성
-
-
 
         val adapter = ListAdapter(this, data)
         listView.adapter = adapter
@@ -69,8 +100,9 @@ class HomeActivity : AppCompatActivity() {
          * */
 
 
+
         mapView = MapView(this)
-        mapViewContainer = map_view as ViewGroup
+        //mapViewContainer = map_view as ViewGroup
         mapViewContainer.addView(mapView)
     }
 

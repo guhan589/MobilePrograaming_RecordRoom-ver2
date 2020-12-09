@@ -1,4 +1,4 @@
-package com.example.recordroom.function
+package com.example.recordroom.ui.commom
 
 import android.Manifest
 import android.app.Activity

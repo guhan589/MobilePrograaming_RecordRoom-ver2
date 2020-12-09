@@ -1,4 +1,4 @@
-package com.example.recordroom.function
+package com.example.recordroom.ui.commom
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,12 +7,14 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import java.util.*
+import kotlin.String as String
 
 public class GpsManager(val context: Context) {
 
     var location: Location? = null
-    var address: String? = null
+    var address = ""
     private val geocoder = Geocoder(context, Locale.getDefault())
 
     init {
@@ -21,6 +23,7 @@ public class GpsManager(val context: Context) {
 
     @SuppressLint("MissingPermission")
     fun initGpsCheck() {
+
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         val locationListener = object: LocationListener {
@@ -47,6 +50,8 @@ public class GpsManager(val context: Context) {
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1f, locationListener)
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1f, locationListener)
+
+        makeAddress()// 주소 생성
     }
 
     /**
@@ -59,17 +64,21 @@ public class GpsManager(val context: Context) {
                 location?.longitude?: (-1).toDouble(),
                 1
             )[0].getAddressLine(0)
+
+            Log.d("makeAddress", "address: "+address)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-    private fun getUrl(): String? {
-        return address
-    }
+
+
     fun getLatitude(): Double? {
         return location?.latitude
     }
     fun getLongitude(): Double? {
         return location?.longitude
+    }
+    fun getAddr():String{
+        return address
     }
 }

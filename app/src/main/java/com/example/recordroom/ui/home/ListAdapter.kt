@@ -1,7 +1,8 @@
-package com.example.recordroom.UI
+package com.example.recordroom.ui.home
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.recordroom.R
-import com.example.recordroom.function.Permission
+import com.example.recordroom.ui.addroom.AddRoomActivity
+import com.example.recordroom.ui.commom.RoomRecord
+
+
 import kotlinx.android.synthetic.main.item_list.view.*
 
 class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
@@ -26,9 +30,9 @@ class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
         var addBtn:Button?=null
         if(convertView == null){
              view = LayoutInflater.from(context).inflate(R.layout.item_list,null)
-             titleView = view.findViewById<TextView>(R.id.list_text)
-             deleteBtn = view.findViewById<Button>(R.id.deleteBtn)
-             addBtn = view.findViewById<Button>(R.id.addBtn)
+             titleView = view.findViewById<TextView>(R.id.list_text) //제목
+             deleteBtn = view.findViewById<Button>(R.id.deleteBtn) //삭제버튼
+             addBtn = view.findViewById<Button>(R.id.addBtn) //추가하기 버튼
         }
 
 
@@ -41,11 +45,13 @@ class ListAdapter(context:Context, list:ArrayList<RoomRecord>) : BaseAdapter(){
 
         deleteBtn?.setOnClickListener{
             Toast.makeText(context,"리스트 삭제",Toast.LENGTH_SHORT).show()
+            Log.d("ListAdapter", "deleteBtn: $position")
         }
         addBtn?.setOnClickListener{
 
             Toast.makeText(context,"추가하기 ",Toast.LENGTH_SHORT).show()
-            val intent = Intent(context,AddRoomActivity::class.java);
+            val intent = Intent(context,
+                AddRoomActivity::class.java);
             context.startActivity(intent)
         }
         return view

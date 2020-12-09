@@ -1,4 +1,4 @@
-package com.example.recordroom.UI
+package com.example.recordroom.ui.commom
 
 import com.example.recordroom.model.UserDto
 import com.google.firebase.database.*

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    tools:context=".UI.Login.SignupActivity"
+    tools:context=".ui.login.SignupActivity"
 
     android:orientation="vertical">
 

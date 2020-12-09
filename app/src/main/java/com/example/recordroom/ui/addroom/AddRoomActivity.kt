@@ -1,24 +1,17 @@
-package com.example.recordroom.UI
+package com.example.recordroom.ui.addroom
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.recordroom.R
-import com.example.recordroom.function.GpsManager
-import com.example.recordroom.function.Permission
+import com.example.recordroom.ui.commom.GpsManager
+import com.example.recordroom.ui.commom.Permission
 import com.example.recordroom.model.SharedUserData
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_add_room.*
-import kotlinx.android.synthetic.main.bottomsheet_dialog.*
-import kotlinx.android.synthetic.main.content_main.*
 import net.daum.mf.map.api.MapCircle
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -36,7 +29,18 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
     var latitude:Double = 0.0
     var longitude:Double = 0.0
     val REQUEST_TEST = 1
+    var address = "" // 사용자 위치
+
     //private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    companion object {
+        lateinit var activity:Activity
+        fun getInstance():Activity{
+            return activity
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_room)
@@ -45,11 +49,16 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         
         //initMapview();//지도 생성
 
-        val gpsManager = GpsManager(this) // GPS 모듈 통신 
+        activity = this
+        val gpsManager = GpsManager(this) // GPS 모듈 통신
         latitude = gpsManager.getLatitude()!!//경도
         longitude = gpsManager.getLongitude()!!//위도
-        Log.d("onCreate", "latitude: " + latitude)
-        Log.d("onCreate", "longitude: " + longitude)
+        address = gpsManager.getAddr()
+
+
+        Log.d("AddRoomActivity", "latitude: " + latitude)
+        Log.d("AddRoomActivity", "longitude: " + longitude)
+        Log.d("AddRoomActivity", "address: " + address)
 
 
         var user_id = SharedUserData(this).getUser_id();
@@ -65,24 +74,7 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         }
 
 
-        /*bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(object:
-            BottomSheetBehavior.BottomSheetCallback(){
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // handle onSlide
-            }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> Toast.makeText(applicationContext, "STATE_COLLAPSED", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_EXPANDED -> Toast.makeText(applicationContext, "STATE_EXPANDED", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_DRAGGING -> Toast.makeText(applicationContext, "STATE_DRAGGING", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_SETTLING -> Toast.makeText(applicationContext, "STATE_SETTLING", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_HIDDEN -> Toast.makeText(applicationContext, "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
-                    else -> Toast.makeText(applicationContext, "OTHER_STATE", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })*/
 
     }
 
@@ -92,7 +84,9 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
          * Bottom Sheet Dialog를 생성하고 이를 인터페이스에 띄움
          * 
          * */
-        val bottomSheetDialog = RatingBottomDialogFragment().getInstance()
+        val bottomSheetDialog = RatingBottomDialogFragment()
+            .getInstance()
+        bottomSheetDialog!!.address = address
         bottomSheetDialog?.show(getSupportFragmentManager(),"bottomSheet")
     }
 
@@ -113,10 +107,10 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         /**
          * mapview 지도의 환경 설정(zoom level, 보여줄 좌표값)
          * */
-        mapView.setZoomLevel(6,true)
+        mapView.setZoomLevel(1,true)
         Log.d("createOptionMapview", "latitude1: "+latitude)
         Log.d("createOptionMapview", "longitude1: "+longitude)
-        Log.d("createOptionMapview", "zoomLevel: "+mapView.zoomLevel)
+        //Log.d("createOptionMapview", "zoomLevel: "+mapView.zoomLevel)
 
         val mapPoint = MapPoint.mapPointWithGeoCoord(latitude,longitude)
         mapView.setMapCenterPoint(mapPoint,true)
@@ -131,6 +125,9 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
     }
 
     fun makeOverlay(mapView: MapView, latitude:Double, longitude : Double ){
+        /**
+         * 특정 위치에 오버레이 표시
+         * **/
         val mapCircle = MapCircle(MapPoint.mapPointWithCONGCoord(latitude,longitude),500, Color.argb(97,68,69,240),Color.argb(0,255,255,255))
         mapView.addCircle(mapCircle)
     }
@@ -144,7 +141,7 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
                 val value = data?.getStringExtra("result")
 
                 Log.d("TAG," ,"onActivityResult: "+value)
-                //show("Result: " + data?.getStringExtra("result"))
+
             } else {   // RESULT_CANCEL
                 //show("Failed")
             }
@@ -154,6 +151,8 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
 
 
     }
+
+
 
 
     override fun onResume() {
@@ -203,6 +202,7 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
          * Mapview가 사용가능한 상태가 되어있음을 알려주는 메소드
          * 
          * **/
+        Log.d("onMapViewInitialized", "onMapViewInitialized: ")
 
     }
 

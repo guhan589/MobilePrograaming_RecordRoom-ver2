@@ -1,4 +1,4 @@
-package com.example.recordroom.UI.Login
+package com.example.recordroom.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
-import com.example.recordroom.UI.Firebase_connection
-import com.example.recordroom.UI.HomeActivity
+import com.example.recordroom.ui.commom.Firebase_connection
+import com.example.recordroom.ui.home.HomeActivity
 import com.example.recordroom.model.SharedUserData
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*

@@ -1,4 +1,4 @@
-package com.example.recordroom.UI
+package com.example.recordroom.ui
 
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -10,8 +10,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recordroom.R
-import com.example.recordroom.UI.Login.LoginActivity
+import com.example.recordroom.ui.login.LoginActivity
 import com.example.recordroom.model.SharedUserData
+import com.example.recordroom.ui.home.HomeActivity
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 

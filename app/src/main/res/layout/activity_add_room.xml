@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.AddRoomActivity"
+    tools:context=".ui.addroom.AddRoomActivity"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="11dp"
-            android:layout_marginBottom="341dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="320dp"
             android:backgroundTint="#FFFFFF"
 
             android:src="@drawable/ic_baseline_refresh_24" />
