@@ -1,7 +1,9 @@
 package com.example.recordroom.ui.home
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -13,18 +15,18 @@ import androidx.appcompat.widget.Toolbar
 import com.example.recordroom.R
 import com.example.recordroom.ui.commom.Permission
 import com.example.recordroom.model.SharedUserData
+import com.example.recordroom.ui.addroom.AddRoomActivity
 import com.example.recordroom.ui.commom.RoomRecord
-import com.example.recordroom.ui.home.ListAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.appbar.view.*
 import net.daum.mf.map.api.MapView
-import java.lang.reflect.Array
 
 
 class HomeActivity : AppCompatActivity() {
-    var data = arrayListOf<RoomRecord>()
+    var roomdata = arrayListOf<RoomRecord>()
+    var documentdata = arrayListOf<String>()
 
     var db : FirebaseFirestore? = null
     lateinit var mapView: MapView
@@ -33,8 +35,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val name = intent.getStringExtra("name")
-        Log.d("TAG", "name: "+name)
+
         val toolbar:Toolbar
         toolbar = appbar
         toolbar.appbar_textView.setText("방 구")
@@ -42,50 +43,51 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
 
+        val progress = ProgressDialog(this)
+        progress.setCancelable(false)
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        progress.setMessage("데이터 읽어 오는 중...\n잠시만 기다려주세요.")
+
         val permission = Permission(this)
         permission.checkPermissions() //퍼미션 체크
 
-        /**임시 list**/
-
-        val arrayList = ArrayList<Int>()
-        arrayList.add(1)
-        arrayList.add(2)
-        arrayList.add(3)
 
 
-        /**
-         * fireStore 내용가져오기
-         * */
 
-        db = FirebaseFirestore.getInstance()
-        val userid = SharedUserData(this).getUser_id()
-        db!!.collection(userid!!).get().addOnSuccessListener { result  -> //컬렉션의 모든 문서 보기
-            for (document in result ) {
-                Log.d("TAG", "${document.id} => ${document.data}")
-            }
+        addBtn.setOnClickListener{
+            val intent = Intent(this, AddRoomActivity::class.java);
+            startActivity(intent)
         }
-            .addOnFailureListener { exception ->
-                Log.w("TAG", "Error getting documents: ", exception)
-            }
 
 
-        /**
-         * data 하나를 더 추가해서 0번째에 추가하기 버튼을 만들어야함
-         * **/
-        data.add(RoomRecord("q","w","e","r",arrayList))
-        data.add(RoomRecord("q","w","e","r",arrayList))
-        data.add(RoomRecord("a","s","d","f",arrayList))
 
-       // initMapview();// mapview생성
 
-        val adapter = ListAdapter(this, data)
-        listView.adapter = adapter
-        adapter.notifyDataSetChanged()
+
 
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val selectItem = parent.getItemAtPosition(position) as String
-            Log.d("TAG", "selectItem: "+selectItem)
+            progress.show()
+            val selectItem = parent.getItemAtPosition(position) as RoomRecord
+            val intent = Intent(this,DetailRoomActivity::class.java)
+
+            intent.putExtra("roomName",selectItem.roomName)
+            intent.putExtra("address",selectItem.address)
+            intent.putExtra("latitude",selectItem.latitude)
+            intent.putExtra("longitude",selectItem.longitude)
+            intent.putExtra("imageUri",selectItem.imageUri)
+            intent.putExtra("imageName",selectItem.imageName)
+            intent.putExtra("scores1",selectItem.scores?.get(0))
+            intent.putExtra("scores2",selectItem.scores?.get(1))
+            intent.putExtra("scores3",selectItem.scores?.get(2))
+            intent.putExtra("scores4",selectItem.scores?.get(3))
+            intent.putExtra("scores5",selectItem.scores?.get(4))
+            intent.putExtra("scores6",selectItem.scores?.get(5))
+            intent.putExtra("documentdata",documentdata.get(position))
+            startActivity(intent)
+            Log.d("TAG", "selectItem: "+selectItem.address)
+            Log.d("TAG", "selectItem: "+selectItem.scores)
+            Log.d("TAG", "selectItem: "+documentdata.get(position))
+            progress.dismiss()
         }
 
 
@@ -94,12 +96,45 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    fun downloagList(){
+        /**
+         * fireStore 내용가져오기
+         * */
+        roomdata.clear()
+        documentdata.clear()
+        db = FirebaseFirestore.getInstance()
+        val userid = SharedUserData(this).getUser_id()
+
+        db!!.collection(userid!!).get().addOnSuccessListener { result  -> //컬렉션의 모든 문서 보기
+            for (document in result ) {
+                val map = document.data
+                documentdata.add(document.id)
+                Log.d("TAG", "scores11: "+map.getValue("scores"))
+                roomdata.add(RoomRecord(
+                    map.getValue("roomName") as String?,map.getValue("address") as String?,
+                    map.getValue( "latitude") as Double?, map.getValue("longitude") as Double?,
+                    map.getValue("imageUri") as ArrayList<String>?,
+                    map.getValue("imageName") as ArrayList<String>?, map.getValue("scores") as ArrayList<Double>?
+                ))
+
+            }
+            Log.d("downloagList", "data.size: "+roomdata.size)
+            updateList()
+        }.addOnFailureListener { exception ->
+            Log.w("TAG", "Error getting documents: ", exception)
+        }
+    }
+    fun updateList(){
+        val adapter = ListAdapter(this, roomdata, documentdata,this)
+        listView.adapter = adapter
+        adapter.notifyDataSetChanged()
+
+    }
+
     fun initMapview(){
         /**
          * 카카오 mapView 객체
          * */
-
-
 
         mapView = MapView(this)
         //mapViewContainer = map_view as ViewGroup
@@ -141,4 +176,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        downloagList()
+    }
 }

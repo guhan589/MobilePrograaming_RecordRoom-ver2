@@ -9,16 +9,22 @@
         android:id="@+id/row_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/list_text"
+            android:id="@+id/listTextview"
             style="@style/TextAppearance.AppCompat.Large"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2" />
-
-        <Button
+        <TextView
+            android:id="@+id/addressTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="2"/>
+       <!-- <Button
             android:id="@+id/deleteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,10 +33,10 @@
             android:background="@drawable/btn_color"
             android:layout_weight="6"
             android:gravity="center"
-            android:text="삭제" />
+            android:text="삭제" />-->
     </LinearLayout>
 
-    <Button
+    <!--<Button
         android:id="@+id/addBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,5 +44,5 @@
         android:textSize="20sp"
         android:textColor="#686565"
         android:background="#00FFFFFF"
-        android:visibility="gone"/>
+        android:visibility="gone"/> -->
 </LinearLayout>

@@ -7,25 +7,21 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Gallery
-import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.Toast
 
 import com.example.recordroom.R
-import com.example.recordroom.model.RoomInform
 import com.example.recordroom.model.SharedUserData
 import com.example.recordroom.ui.commom.Permission
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
+import com.example.recordroom.ui.commom.RoomRecord
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.bottomsheet_dialog.*
@@ -38,27 +34,27 @@ import kotlin.collections.HashMap
 class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
 
     public var address:String = ""
+    var latitude : Double = 0.0
+    var longitude : Double = 0.0
+
+
     var db : FirebaseFirestore? = null
     var fbAuth : FirebaseAuth? = null
     var fbStorage : FirebaseStorage? = null
-    var uriPhoto : Uri? = null
-
+    var send_uriGroup : ArrayList<String>? = arrayListOf<String>()
+    var user_uriGroup : ArrayList<Uri>? = arrayListOf<Uri>()
+    var imageNameGrop : ArrayList<String> = arrayListOf<String>()
     var dataUri:Uri ?= null
     var imagegroup = arrayListOf<Bitmap>()
     val Gallery = 0
     lateinit var beforeActivity :Activity
 
-
-    private var msgLo: LinearLayout? = null
-    private var emailLo: LinearLayout? = null
-    private var cloudLo: LinearLayout? = null
-    private var bluetoothLo: LinearLayout? = null
-    private var value1 = 0f //첫번째 score
-    private var value2 = 0f //두번재 score
-    private var value3 = 0f //세번째 score
-    private var value4 = 0f// 네번째 score
-    private var value5 = 0f //다섯번째 score
-    private var value6 = 0f //여섯번째 score
+    private var value1 = 0.0 //첫번째 score
+    private var value2 = 0.0 //두번재 score
+    private var value3 = 0.0 //세번째 score
+    private var value4 = 0.0// 네번째 score
+    private var value5 = 0.0 //다섯번째 score
+    private var value6 = 0.0 //여섯번째 score
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.bottomsheet_dialog, container, false)
 
@@ -77,18 +73,21 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
         val progress = ProgressDialog(context)
         progress.setCancelable(false)
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        progress.setMessage("등록중입니다.")
+        progress.setMessage("등록중입니다.\n(최대 1분 소요)")
 
 
 
 
         addImageBtn.setOnClickListener{
             Permission(context as Activity).checkPermissions()
-            loadImage()
+            if(imagegroup.size>=3){
+                Toast.makeText(context,"이미지는 최대 3장까지 업로드 가능합니다.",Toast.LENGTH_SHORT).show()
+            }else
+                loadImage()
         }
         addRoomBtn.setOnClickListener{
 
-            val scoreList = ArrayList<Float>()
+            val scoreList = ArrayList<Double>()
 
             progress.show()
             /**
@@ -110,51 +109,51 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
             if(roomTitle.text!!.toString().equals("")){
                 Toast.makeText(context,"제목을 입력하세요.",Toast.LENGTH_SHORT).show()
             }else{
-                var timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                var imgFileName = "IMAGE_" + timeStamp + "_.png"
-                Log.d("TAG", "imgFileName: "+imgFileName)
-                var storageRef = fbStorage?.reference?.child("images")?.child(imgFileName)
-
-                storageRef?.putFile(dataUri!!)?.addOnSuccessListener {
-                    storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        val userInfo = RoomInform()
-
-                        userInfo.rommName = roomTitle.text.toString()//제목
-                        userInfo.address = address.replace("대한민국","") // 주소
-                        userInfo.scores = scoreList //각 점수들 
-                        userInfo.imageUrl = uri.toString() //이밎 다운로드 경로
-                        userInfo.imagename = imgFileName
-                        var userId = SharedUserData(activity).getUser_id()
-                        if(userId == null)
-                            userId = "null"
-                        //db?.collection(userId)?.document(fbAuth?.uid.toString())?.set(userInfo)
-                        db?.collection(userId)?.add(userInfo)
-                        progress.dismiss()
-                        dismiss()
-                        beforeActivity.finish()
-                    }
-                }
-
-
-               /* room["title"] = roomTitle.text.toString() //제목
-                room["address"] = address.replace("대한민국","") // 주소
-                room["scores"] = scoreList //각 점수
+                progress.show()
+                var i =0;
                 var userId = SharedUserData(activity).getUser_id()
                 if(userId == null)
                     userId = "null"
-                db!!.collection(userId).add(room)
-                    .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
-                        Log.d(
-                            "TAG",
-                            "onSuccess: " + documentReference.id
-                        )
-                        Toast.makeText(context,"추가 완료",Toast.LENGTH_SHORT).show()
-                        dismiss() //다이얼로그 dismiss
-                    })
-                    .addOnFailureListener(OnFailureListener {
-                        Toast.makeText(context,"통신 오류",Toast.LENGTH_SHORT).show()
-                        dismiss() //다이얼로그 dismiss
-                    })*/
+                var timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                for(i in 0..user_uriGroup!!.size-1){
+                    var imgFileName = "IMAGE_" + timeStamp + "_$i" + "_.png"
+                    var storageRef = fbStorage?.reference?.child(userId!!)?.child(imgFileName)
+
+                    storageRef?.putFile(user_uriGroup!!.get(i))?.addOnSuccessListener {
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+
+                            send_uriGroup?.add(uri.toString())
+                            imageNameGrop?.add(imgFileName) //이미지 파일 이름 list에 추가
+                        }
+                    }
+
+                }
+
+
+             
+
+
+
+                Handler().postDelayed({
+                    val userInfo = RoomRecord()
+                    Log.d("TAG", "send_uriGroup.size: ${send_uriGroup?.size} ")
+                    Log.d("TAG", "imageNameGrop.size: ${imageNameGrop.size} ")
+                    userInfo.roomName = roomTitle.text.toString()//제목
+                    userInfo.address = address.replace("대한민국","") // 주소
+                    userInfo.latitude = latitude
+                    userInfo.longitude = longitude
+                    userInfo.scores = scoreList //각 점수들
+                    userInfo.imageUri = send_uriGroup //이미지 다운로드 경로
+                    userInfo.imageName = imageNameGrop // 이미지 이름
+
+
+                    //db?.collection(userId)?.document(fbAuth?.uid.toString())?.set(userInfo)
+                    db?.collection(userId!!)?.add(userInfo) //Firestore 에 방 정보기입
+                    progress.dismiss()
+                    dismiss()
+                    beforeActivity.finish()
+                },6000)
+
             }
 
 
@@ -166,22 +165,20 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("TAG", "onActivityResult1: ")
+
         if(requestCode == Gallery){
-            Log.d("TAG", "onActivityResult12: ")
+
             if(resultCode == RESULT_OK){
                 //imgFileName = getImageNameToUri(data?.getData());
 
-                Log.d("TAG", "onActivityResult   ${data.toString()} ")
-                Log.d("TAG", "onActivityResult ${data?.dataString} ")
 
                 //imgFileName = imgFileName.substring(imgFileName.lastIndexOf("/")+1)
 
                 dataUri = data?.data
+                user_uriGroup?.add(dataUri!!) //사용자가 추가한 이미지 uri 배열에 담김
                 var bitmap:Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver,dataUri)
                 imagegroup?.add(bitmap)
-                Log.d("onActivityResult", "size: ${imagegroup?.size}")
-                Log.d("onActivityResult4", "onActivityResult4: ")
+
                 imagelist.visibility=View.VISIBLE
                 updateList();
 
@@ -208,12 +205,31 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
             it.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 var id = ratingBar.id
                 when(id){
-                    R.id.score1 -> value1 = rating
-                    R.id.score2 -> value2 = rating
-                    R.id.score3 -> value3 = rating
-                    R.id.score4 -> value4 = rating
-                    R.id.score5 -> value5 = rating
-                    R.id.score6 -> value6 = rating
+                    R.id.score1 -> {
+                        value1 = rating.toDouble()
+                        Log.d("ratingChanged", "value1: $value1")
+                    }
+                    R.id.score2 ->{
+                        value2 = rating.toDouble()
+                        Log.d("ratingChanged", "value2: $value2")
+                    }
+                    R.id.score3 ->{
+                        value3 = rating.toDouble()
+                        Log.d("ratingChanged", "value3: $value3")
+                    }
+                    R.id.score4 ->{
+                        value4 = rating.toDouble()
+                        Log.d("ratingChanged", "value4: $value4")
+                    }
+                    R.id.score5 ->{
+                        value5 = rating.toDouble()
+                        Log.d("ratingChanged", "value5: $value5")
+                    }
+                    R.id.score6 ->{
+                        value6 = rating.toDouble()
+                        Log.d("ratingChanged", "value6: $value6")
+                    }
+
                 }
                 Log.d("TAG", "$ratingBar:  $rating")
             }

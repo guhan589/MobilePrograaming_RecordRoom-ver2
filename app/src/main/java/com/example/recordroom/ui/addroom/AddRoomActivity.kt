@@ -23,7 +23,6 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
     /**
      * 방추가하기
      * **/
-    //var data = arrayListOf<RoomRecord>()
     lateinit var mapView: MapView
     lateinit var mapViewContainer:ViewGroup
     var latitude:Double = 0.0
@@ -56,10 +55,6 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         address = gpsManager.getAddr()
 
 
-        Log.d("AddRoomActivity", "latitude: " + latitude)
-        Log.d("AddRoomActivity", "longitude: " + longitude)
-        Log.d("AddRoomActivity", "address: " + address)
-
 
         var user_id = SharedUserData(this).getUser_id();
         if (user_id.equals("") || user_id == null) {
@@ -87,6 +82,8 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         val bottomSheetDialog = RatingBottomDialogFragment()
             .getInstance()
         bottomSheetDialog!!.address = address
+        bottomSheetDialog!!.latitude = latitude
+        bottomSheetDialog!!.longitude = longitude
         bottomSheetDialog?.show(getSupportFragmentManager(),"bottomSheet")
     }
 
