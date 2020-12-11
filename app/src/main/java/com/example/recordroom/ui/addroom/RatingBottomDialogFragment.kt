@@ -15,6 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.recordroom.R
 import com.example.recordroom.model.SharedUserData
@@ -75,6 +77,9 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         progress.setMessage("등록중입니다.\n(최대 1분 소요)")
 
+
+
+        imagelist.addItemDecoration(DividerItemDecoration(context,LinearLayoutManager.HORIZONTAL))
 
 
 
@@ -152,7 +157,7 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
                     progress.dismiss()
                     dismiss()
                     beforeActivity.finish()
-                },6000)
+                },15000)
 
             }
 
@@ -242,5 +247,7 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent,"Load Picture"),Gallery)
     }
+
+
 
 }

@@ -1,11 +1,13 @@
 package com.example.recordroom.ui.home
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import android.widget.Toast
 import com.example.recordroom.R
 import com.example.recordroom.model.SharedUserData
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_detail_room.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -22,6 +25,7 @@ import java.net.URL
 
 class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapView.MapViewEventListener {
     var db : FirebaseFirestore? = null
+    var fbStorage : FirebaseStorage? = null
     lateinit var mapView: MapView
     lateinit var mapViewContainer:ViewGroup
     var latitude:Double = 0.0
@@ -33,6 +37,10 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_room)
 
+        val progress = ProgressDialog(this)
+        progress.setCancelable(false)
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        progress.setMessage("삭제 중...\n잠시만 기다려주세요.")
 
         /**
          * 사용자가 클릭한 방정보 가져오기
@@ -98,13 +106,29 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
 
         val userId = SharedUserData(this).getUser_id()
         deleteBtn.setOnClickListener {
+            progress.show()
             db = FirebaseFirestore.getInstance()
+            fbStorage = FirebaseStorage.getInstance()
+            for(i in 0..imageName!!.size-1) {
+                val path = "$userId/${imageName.get(i)}"
+                Log.d("TAG", "path: $path")
+                val deleteFile = fbStorage!!.reference.child(path)
+                deleteFile.delete().addOnSuccessListener {
+
+                }.addOnFailureListener{
+
+                }
+            }
             db!!.collection(userId!!).document(documentdata!!).delete().addOnCompleteListener {
                 if (it.isSuccessful)
                     Toast.makeText(this, "삭제 성공", Toast.LENGTH_SHORT).show()
 
-                finish()
+
             }
+            Handler().postDelayed({
+                progress.dismiss()
+                finish()
+            },15000)
         }
 
 
@@ -137,7 +161,7 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
                 imageView2.setImageBitmap(bitmap)
             }
             R.id.imageView3 -> {
-                imageView3.visibility = View.GONE
+                imageView3.visibility = View.VISIBLE
                 imageView3.setImageBitmap(bitmap)
             }
 

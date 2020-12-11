@@ -163,6 +163,10 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         super.onPause()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mapViewContainer.removeView(mapView)
+    }
     override fun onStop() {
         super.onStop()
         mapViewContainer.removeView(mapView)

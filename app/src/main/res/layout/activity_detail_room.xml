@@ -31,7 +31,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
-                android:orientation="horizontal"
                 tools:listitem="@layout/roomimage"
                 android:dividerHeight="10dp"
                 android:visibility="gone"/>
@@ -40,7 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
-                android:orientation="horizontal"
                 tools:listitem="@layout/roomimage"
                 android:dividerHeight="10dp"
                 android:visibility="gone"/>
@@ -50,31 +48,30 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 android:orientation="horizontal"
-                tools:listitem="@layout/roomimage"
                 android:dividerHeight="10dp"
                 android:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/roomtittleTextview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="22sp"
-                app:behavior_hideable="false"
-                app:behavior_peekHeight="50dp"/>
-            <TextView
-                android:id="@+id/roomaddressTextview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="22sp"
-                app:behavior_hideable="false"
-                app:behavior_peekHeight="50dp"/>
+
         </LinearLayout>
 
-
+        <TextView
+            android:id="@+id/roomtittleTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="22sp"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="50dp"/>
+        <TextView
+            android:id="@+id/roomaddressTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="22sp"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="50dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

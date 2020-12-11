@@ -14,6 +14,10 @@ class imageAdapter(private val items: ArrayList<Bitmap>) : RecyclerView.Adapter<
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: imageAdapter.ViewHolder, position: Int) {
+        /*val layoutParams = holder.itemView.layoutParams //아이템 간격 조절
+        layoutParams.height = 100
+        holder.itemView.requestLayout()*/
+
         val item = items[position]
 
         val listener = View.OnClickListener {
