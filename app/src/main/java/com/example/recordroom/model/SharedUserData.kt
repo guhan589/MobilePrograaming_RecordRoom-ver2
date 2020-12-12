@@ -21,7 +21,14 @@ public class SharedUserData {
     }
 
 
-    fun setUserId(user_id: String?, store_id: Boolean) { //아이디 저장 메소드
+    fun setUserId(userid:String){
+        loginInformtaion =
+            activity?.getSharedPreferences("user_inform", Context.MODE_PRIVATE)
+        editor = loginInformtaion?.edit()
+        editor?.putString("user_id", userid)
+        editor?.apply()
+    }
+    fun setUserStore(user_id: String?, store_id: Boolean) { //아이디 저장 메소드
         loginInformtaion =
             activity?.getSharedPreferences("user_inform", Context.MODE_PRIVATE)
         editor = loginInformtaion?.edit()

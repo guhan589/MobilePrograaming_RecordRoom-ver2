@@ -32,7 +32,7 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
     var longitude:Double = 0.0
     var imageGroup = listOf<Int>(R.id.imageView1,R.id.imageView2,R.id.imageView3)
     var ratingGroup = listOf<Int>(R.id.ratingscore1,R.id.ratingscore2,R.id.ratingscore3,R.id.ratingscore4,R.id.ratingscore5,R.id.ratingscore6)
-    //var ratingGroup = listOf<RatingBar>(ratingscore1,ratingscore2,ratingscore3,ratingscore4,ratingscore5,ratingscore6)
+    var count = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_room)
@@ -114,25 +114,24 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
                 Log.d("TAG", "path: $path")
                 val deleteFile = fbStorage!!.reference.child(path)
                 deleteFile.delete().addOnSuccessListener {
+                    count++
 
-                }.addOnFailureListener{
+                    if(count == imageName.size){
+                        progress.dismiss()
+                        finish()
+                    }
 
                 }
             }
-            db!!.collection(userId!!).document(documentdata!!).delete().addOnCompleteListener {
-                if (it.isSuccessful)
-                    Toast.makeText(this, "삭제 성공", Toast.LENGTH_SHORT).show()
-
-
+            db!!.collection(userId!!).document(documentdata!!).delete().addOnSuccessListener {
+                Toast.makeText(this,"계정 삭제 완료",Toast.LENGTH_SHORT).show()
             }
-            Handler().postDelayed({
-                progress.dismiss()
-                finish()
-            },15000)
+
         }
 
 
     }
+
     fun setRating(id:Int, score:Double){ //rating값 설정
         Log.d("TAG", "setRating: $id")
         Log.d("TAG", "setRating: $score")
@@ -279,6 +278,10 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
         super.onResume()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mapViewContainer.removeView(mapView)
+    }
     class URLtoBitmapTask() : AsyncTask<Void, Void, Bitmap>() {
         //액티비티에서 설정해줌
         lateinit var url: URL

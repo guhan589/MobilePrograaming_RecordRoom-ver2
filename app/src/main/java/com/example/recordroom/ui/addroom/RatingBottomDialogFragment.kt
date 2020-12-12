@@ -5,7 +5,9 @@ import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.bottomsheet_dialog.*
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,6 +60,9 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
     private var value4 = 0.0// 네번째 score
     private var value5 = 0.0 //다섯번째 score
     private var value6 = 0.0 //여섯번째 score
+
+    private lateinit var progress:ProgressDialog
+    var count = 0;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.bottomsheet_dialog, container, false)
 
@@ -72,7 +78,7 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
         ratingChanged() //raingBar 체인지 리스너 실행
         updateList()
 
-        val progress = ProgressDialog(context)
+        progress = ProgressDialog(context)
         progress.setCancelable(false)
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         progress.setMessage("등록중입니다.\n(최대 1분 소요)")
@@ -127,37 +133,20 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
                     storageRef?.putFile(user_uriGroup!!.get(i))?.addOnSuccessListener {
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
 
-                            send_uriGroup?.add(uri.toString())
-                            imageNameGrop?.add(imgFileName) //이미지 파일 이름 list에 추가
+                            send_uriGroup?.add(uri.toString())//이미지 URL를 list에 추가
+                            imageNameGrop?.add(imgFileName) //이미지 파일이름 list에 추가
+                            count++;
+                            if(count == user_uriGroup!!.size){
+                                sendUser(userId,scoreList)
+                            }
                         }
                     }
 
                 }
 
-
-             
-
-
-
                 Handler().postDelayed({
-                    val userInfo = RoomRecord()
-                    Log.d("TAG", "send_uriGroup.size: ${send_uriGroup?.size} ")
-                    Log.d("TAG", "imageNameGrop.size: ${imageNameGrop.size} ")
-                    userInfo.roomName = roomTitle.text.toString()//제목
-                    userInfo.address = address.replace("대한민국","") // 주소
-                    userInfo.latitude = latitude
-                    userInfo.longitude = longitude
-                    userInfo.scores = scoreList //각 점수들
-                    userInfo.imageUri = send_uriGroup //이미지 다운로드 경로
-                    userInfo.imageName = imageNameGrop // 이미지 이름
 
-
-                    //db?.collection(userId)?.document(fbAuth?.uid.toString())?.set(userInfo)
-                    db?.collection(userId!!)?.add(userInfo) //Firestore 에 방 정보기입
-                    progress.dismiss()
-                    dismiss()
-                    beforeActivity.finish()
-                },15000)
+                },10000)
 
             }
 
@@ -168,6 +157,25 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
 
     }
 
+    fun sendUser(userId:String, scoreList:ArrayList<Double>){
+        val userInfo = RoomRecord()
+        Log.d("TAG", "send_uriGroup.size: ${send_uriGroup?.size} ")
+        Log.d("TAG", "imageNameGrop.size: ${imageNameGrop.size} ")
+        userInfo.roomName = roomTitle.text.toString()//제목
+        userInfo.address = address.replace("대한민국","") // 주소
+        userInfo.latitude = latitude
+        userInfo.longitude = longitude
+        userInfo.scores = scoreList //각 점수들
+        userInfo.imageUri = send_uriGroup //이미지 다운로드 경로
+        userInfo.imageName = imageNameGrop // 이미지 이름
+
+
+        //db?.collection(userId)?.document(fbAuth?.uid.toString())?.set(userInfo)
+        db?.collection(userId!!)?.add(userInfo) //Firestore 에 방 정보기입
+        progress.dismiss()
+        dismiss()
+        beforeActivity.finish()
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -247,7 +255,6 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent,"Load Picture"),Gallery)
     }
-
 
 
 }

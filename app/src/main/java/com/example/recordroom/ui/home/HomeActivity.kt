@@ -17,6 +17,7 @@ import com.example.recordroom.ui.commom.Permission
 import com.example.recordroom.model.SharedUserData
 import com.example.recordroom.ui.addroom.AddRoomActivity
 import com.example.recordroom.ui.commom.RoomRecord
+import com.example.recordroom.ui.login.LoginActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
@@ -103,19 +104,24 @@ class HomeActivity : AppCompatActivity() {
         roomdata.clear()
         documentdata.clear()
         db = FirebaseFirestore.getInstance()
+
         val userid = SharedUserData(this).getUser_id()
 
+        Log.d("TAG", "downloagList: $userid")
         db!!.collection(userid!!).get().addOnSuccessListener { result  -> //컬렉션의 모든 문서 보기
-            for (document in result ) {
-                val map = document.data
-                documentdata.add(document.id)
-                Log.d("TAG", "scores11: "+map.getValue("scores"))
-                roomdata.add(RoomRecord(
-                    map.getValue("roomName") as String?,map.getValue("address") as String?,
-                    map.getValue( "latitude") as Double?, map.getValue("longitude") as Double?,
-                    map.getValue("imageUri") as ArrayList<String>?,
-                    map.getValue("imageName") as ArrayList<String>?, map.getValue("scores") as ArrayList<Double>?
-                ))
+            if(result != null){
+                for (document in result ) {
+                    val map = document.data
+                    documentdata.add(document.id)
+                    Log.d("TAG", "scores11: "+map.getValue("scores"))
+                    roomdata.add(RoomRecord(
+                        map.getValue("roomName") as String?,map.getValue("address") as String?,
+                        map.getValue( "latitude") as Double?, map.getValue("longitude") as Double?,
+                        map.getValue("imageUri") as ArrayList<String>?,
+                        map.getValue("imageName") as ArrayList<String>?, map.getValue("scores") as ArrayList<Double>?
+                    ))
+                }
+
 
             }
             Log.d("downloagList", "data.size: "+roomdata.size)
@@ -149,6 +155,7 @@ class HomeActivity : AppCompatActivity() {
             DialogInterface.OnClickListener { dialog, which ->
                 SharedUserData(this).reset() //로그아웃시 사용자의 자동로그인을 해제하기위해 reset 메소드 실행
                 finish()
+                startActivity(Intent(this,LoginActivity::class.java))
 
             })
         alertdialog.setNegativeButton("취소",

@@ -97,7 +97,7 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
         mapViewContainer = addRoomMapview as ViewGroup
         mapViewContainer.addView(mapView)
         mapView.setPOIItemEventListener(this)
-
+        createOptionMapview(mapView)
     }
 
     fun createOptionMapview(mapView: MapView){
@@ -154,7 +154,7 @@ class AddRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , MapV
 
     override fun onResume() {
         initMapview()
-        createOptionMapview(mapView)
+
         super.onResume()
     }
     override fun onPause() {

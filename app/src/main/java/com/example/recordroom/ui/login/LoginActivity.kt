@@ -136,9 +136,12 @@ public class LoginActivity : AppCompatActivity() {
 
                     }else if(storeid_btn.isChecked){
                         SharedUserData(this@LoginActivity)
-                            .setUserId(id,true) //아이디와 상태 저장
+                            .setUserStore(id,true) //아이디와 상태 저장
 
-                    }
+                    }else
+                        SharedUserData(this@LoginActivity)
+                            .setUserId(id) // 상태값 없음
+                    
                     val mainIntent = Intent(applicationContext, HomeActivity::class.java)
                     Log.d("TAG", "onDataChange_name: "+name)
                     mainIntent.putExtra("name",name)
