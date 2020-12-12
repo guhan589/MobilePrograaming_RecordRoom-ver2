@@ -9,6 +9,7 @@ import com.example.recordroom.R
 import com.example.recordroom.ui.commom.Firebase_connection
 import com.example.recordroom.ui.home.HomeActivity
 import com.example.recordroom.model.SharedUserData
+import com.example.recordroom.ui.finduser.FinduserActivity
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -51,7 +52,7 @@ public class LoginActivity : AppCompatActivity() {
         }
 
         findTextView.setOnClickListener{//아이디 비빌번호찾기
-
+            startActivity(Intent(this,FinduserActivity::class.java))
         }
 
         autologin_btn.setOnClickListener{//자동로그인 체크박스 이벤트처리
