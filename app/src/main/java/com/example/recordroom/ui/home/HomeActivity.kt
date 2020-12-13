@@ -106,9 +106,9 @@ class HomeActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         val userid = SharedUserData(this).getUser_id()
-
-        Log.d("TAG", "downloagList: $userid")
-        db!!.collection(userid!!).get().addOnSuccessListener { result  -> //컬렉션의 모든 문서 보기
+        val data = db!!.collection(userid!!).get()
+            //data.result.size()==null
+            .addOnSuccessListener { result  -> //컬렉션의 모든 문서 보기
             if(result != null){
                 for (document in result ) {
                     val map = document.data
@@ -119,6 +119,7 @@ class HomeActivity : AppCompatActivity() {
                         map.getValue( "latitude") as Double?, map.getValue("longitude") as Double?,
                         map.getValue("imageUri") as ArrayList<String>?,
                         map.getValue("imageName") as ArrayList<String>?, map.getValue("scores") as ArrayList<Double>?
+
                     ))
                 }
 
@@ -186,5 +187,10 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         downloagList()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
     }
 }

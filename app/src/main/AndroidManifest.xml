@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecordRoom"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.finduser.FinduserPasswordActivity"></activity>
+
         <activity android:name=".ui.finduser.FinduserActivity" />
         <activity android:name=".ui.home.DetailRoomActivity" />
         <activity

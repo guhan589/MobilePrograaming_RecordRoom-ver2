@@ -48,10 +48,12 @@ public class LoginActivity : AppCompatActivity() {
         }
         singupTextview.setOnClickListener{//회원가입 버튼
             val singupIntent = Intent(this, SignupActivity::class.java)
+            resetEditText()// 사용자가 입력한 정보 리셋
             startActivity(singupIntent)
         }
 
         findTextView.setOnClickListener{//아이디 비빌번호찾기
+            resetEditText()// 사용자가 입력한 정보 리셋
             startActivity(Intent(this,FinduserActivity::class.java))
         }
 
@@ -108,12 +110,8 @@ public class LoginActivity : AppCompatActivity() {
                 var status:Boolean = false //첫번쨰 for문을 break하기 위함
                 var intentState = false//계정 유무에 따라 로그인이 가능/불가능으로 나뉨
                 for(snapshot1 in snapshot.children){
-
                     if(id.equals(snapshot1.key)){ //사용자가 입력한 id와 같은 key가 있을경우
-
                         for(snapshot2 in snapshot1.children) {
-
-
                             if (snapshot2.key.equals("passwd")) {
                                 if(snapshot2.value?.equals(pwd)!!){
                                     name = snapshot1.child("userName").value.toString()//사용자 이름
@@ -133,19 +131,17 @@ public class LoginActivity : AppCompatActivity() {
                     if(autologin_btn.isChecked){//자동로그인
                         SharedUserData(this@LoginActivity)
                             .setUserAuto(id,pwd,true)//아이디,패스워드, 상태저장
-
-
                     }else if(storeid_btn.isChecked){
                         SharedUserData(this@LoginActivity)
                             .setUserStore(id,true) //아이디와 상태 저장
-
                     }else
                         SharedUserData(this@LoginActivity)
                             .setUserId(id) // 상태값 없음
-                    
+
                     val mainIntent = Intent(applicationContext, HomeActivity::class.java)
                     Log.d("TAG", "onDataChange_name: "+name)
                     mainIntent.putExtra("name",name)
+                    resetEditText()// 사용자가 입력한 정보 리셋
                     startActivity(mainIntent)
                     finish()
                 }else
@@ -160,5 +156,9 @@ public class LoginActivity : AppCompatActivity() {
     }
     fun show(message:String){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+    }
+    fun resetEditText(){
+        ed_userId.setText("")//초기화
+        ed_userPw.setText("")//초기화
     }
 }

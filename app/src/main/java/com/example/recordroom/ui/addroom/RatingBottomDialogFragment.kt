@@ -97,19 +97,17 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
                 loadImage()
         }
         addRoomBtn.setOnClickListener{
-
             val scoreList = ArrayList<Double>()
-
             progress.show()
             /**
              * 스코어
             * */
-            scoreList.add(value1)
-            scoreList.add(value2)
-            scoreList.add(value3)
-            scoreList.add(value4)
-            scoreList.add(value5)
-            scoreList.add(value6)
+            scoreList.add(value1) //방크기 점수
+            scoreList.add(value2) //수압 점수
+            scoreList.add(value3) // 치안 점수
+            scoreList.add(value4) //방음 점수
+            scoreList.add(value5) // 수압 점수
+            scoreList.add(value6) // 편의시설 점수
 
 
             db = FirebaseFirestore.getInstance()
@@ -144,9 +142,7 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
 
                 }
 
-                Handler().postDelayed({
 
-                },10000)
 
             }
 

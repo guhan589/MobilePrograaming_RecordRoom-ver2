@@ -23,7 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/addbtncolor"
-        android:text="추가하기"/>
+        android:text="방 추가하기"
+        android:textSize="20sp" />
 
     <ListView
         android:id="@+id/listView"
