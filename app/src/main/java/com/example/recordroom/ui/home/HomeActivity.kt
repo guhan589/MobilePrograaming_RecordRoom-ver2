@@ -71,23 +71,20 @@ class HomeActivity : AppCompatActivity() {
             val selectItem = parent.getItemAtPosition(position) as RoomRecord
             val intent = Intent(this,DetailRoomActivity::class.java)
 
-            intent.putExtra("roomName",selectItem.roomName)
-            intent.putExtra("address",selectItem.address)
-            intent.putExtra("latitude",selectItem.latitude)
-            intent.putExtra("longitude",selectItem.longitude)
-            intent.putExtra("imageUri",selectItem.imageUri)
-            intent.putExtra("imageName",selectItem.imageName)
-            intent.putExtra("scores1",selectItem.scores?.get(0))
-            intent.putExtra("scores2",selectItem.scores?.get(1))
-            intent.putExtra("scores3",selectItem.scores?.get(2))
-            intent.putExtra("scores4",selectItem.scores?.get(3))
-            intent.putExtra("scores5",selectItem.scores?.get(4))
-            intent.putExtra("scores6",selectItem.scores?.get(5))
-            intent.putExtra("documentdata",documentdata.get(position))
+            intent.putExtra("roomName",selectItem.roomName) //방이름
+            intent.putExtra("address",selectItem.address) // 방 주소
+            intent.putExtra("latitude",selectItem.latitude) // 방 위도
+            intent.putExtra("longitude",selectItem.longitude) // 방 경도
+            intent.putExtra("imageUri",selectItem.imageUri) // 방 이미지 다운로드 URL
+            intent.putExtra("imageName",selectItem.imageName) // 방 이미지 이름
+            intent.putExtra("score1",selectItem.scores?.get(0)) // 방크기 점수
+            intent.putExtra("score2",selectItem.scores?.get(1)) // 방 수압 점수
+            intent.putExtra("score3",selectItem.scores?.get(2)) // 방 치안 점수
+            intent.putExtra("score4",selectItem.scores?.get(3)) // 방 방음 점수
+            intent.putExtra("score5",selectItem.scores?.get(4)) // 방 수압 점수
+            intent.putExtra("score6",selectItem.scores?.get(5)) // 방 편의시설 점수
+            intent.putExtra("documentdata",documentdata.get(position)) //document ID값
             startActivity(intent)
-            Log.d("TAG", "selectItem: "+selectItem.address)
-            Log.d("TAG", "selectItem: "+selectItem.scores)
-            Log.d("TAG", "selectItem: "+documentdata.get(position))
             progress.dismiss()
         }
 

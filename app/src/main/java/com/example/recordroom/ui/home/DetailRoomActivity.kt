@@ -51,37 +51,29 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
         longitude = intent.getDoubleExtra("longitude",0.0)
         var imageUri = intent.getStringArrayListExtra("imageUri") //이미지 주소
         var imageName = intent.getStringArrayListExtra("imageName") // 이미지 이름
-        var score1 = intent.getDoubleExtra("scores1",0.0) //socre1값
-        var score2 = intent.getDoubleExtra("scores2",0.0) //socre2값
-        var score3 = intent.getDoubleExtra("scores3",0.0) //socre3값
-        var score4 = intent.getDoubleExtra("scores4",0.0) //socre4값
-        var score5 = intent.getDoubleExtra("scores5",0.0) //socre5값
-        var score6 = intent.getDoubleExtra("scores6",0.0) //socre6값
+        var score1 = intent.getDoubleExtra("score1",0.0) //방크기 점수
+        var score2 = intent.getDoubleExtra("score2",0.0) //수압 점수
+        var score3 = intent.getDoubleExtra("score3",0.0) //치안 점수
+        var score4 = intent.getDoubleExtra("score4",0.0) //방음 점수
+        var score5 = intent.getDoubleExtra("score5",0.0) //수압 점수
+        var score6 = intent.getDoubleExtra("score6",0.0) //편의시설 점수
         var documentdata = intent.getStringExtra("documentdata") //문서이름
-
-        Log.d(":DetailRoomActivity", "roomName: $roomName")
-        Log.d(":DetailRoomActivity", "address: $address")
-        Log.d(":DetailRoomActivity", "latitude: $latitude")
-        Log.d(":DetailRoomActivity", "longitude: $longitude")
-        Log.d(":DetailRoomActivity", "imageUri: ${imageUri?.size}")
-        Log.d(":DetailRoomActivity", "imageName: ${imageName?.size}")
-        //Log.d(":DetailRoomActivity", "scores: ${scores?.size}")
-
+        
         val scores = ArrayList<Double>()
-        scores.add(score1)
-        scores.add(score2)
-        scores.add(score3)
-        scores.add(score4)
-        scores.add(score5)
-        scores.add(score6)
+        scores.add(score1) // 방크기 점수 
+        scores.add(score2) // 수압 점수
+        scores.add(score3) // 치안 점수
+        scores.add(score4) // 방음 점수
+        scores.add(score5) // 수압 점수
+        scores.add(score6) // 편의시설 점수
 
         var status = true
-        imageBtn.setOnClickListener{
+        imageBtn.setOnClickListener{//이미지 보기 버튼 클릭시
             if(status){//활성화
-                imagegroup.visibility = View.VISIBLE
+                imagegroup.visibility = View.VISIBLE // 이미지 구역을 보이게 활성화
                 status = false
             }else{//비활성화
-                imagegroup.visibility = View.GONE
+                imagegroup.visibility = View.GONE //이미지 구역을 안보이게 활성화
                 status = true
             }
             
@@ -91,10 +83,10 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
 
         roomtittleTextview.setText(roomName) //방 이름 설정
         roomaddressTextview.setText(address) // 방주소 설정
-        for(i in 0..scores.size-1){
+        for(i in 0..scores.size-1){ // 각 score값을 설정
             setRating(ratingGroup.get(i),scores.get(i))
         }
-        for( i in 0..imageUri!!.size -1){
+        for( i in 0..imageUri!!.size -1){ //이미지 url를 이용하여 이미지 다운로드
             var image_task: URLtoBitmapTask = URLtoBitmapTask()
             image_task = URLtoBitmapTask().apply {
                 url = URL(imageUri.get(i))
@@ -104,8 +96,11 @@ class DetailRoomActivity : AppCompatActivity(), MapView.POIItemEventListener , M
             setImage(imageView,bitmap)
         }
 
-        val userId = SharedUserData(this).getUser_id()
-        deleteBtn.setOnClickListener {
+        /**
+         * FireStore에 이미지 제거
+         * **/
+        val userId = SharedUserData(this).getUser_id() //사용자 id값 넘김
+        deleteBtn.setOnClickListener { // 삭제하기 버튼
             progress.show()
             db = FirebaseFirestore.getInstance()
             fbStorage = FirebaseStorage.getInstance()

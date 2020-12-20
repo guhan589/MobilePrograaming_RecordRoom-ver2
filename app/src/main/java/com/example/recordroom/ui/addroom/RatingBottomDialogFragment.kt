@@ -100,7 +100,7 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
             val scoreList = ArrayList<Double>()
             progress.show()
             /**
-             * 스코어
+             * 스코어 리스으에 추가
             * */
             scoreList.add(value1) //방크기 점수
             scoreList.add(value2) //수압 점수
@@ -108,7 +108,6 @@ class RatingBottomDialogFragment() : BottomSheetDialogFragment() {
             scoreList.add(value4) //방음 점수
             scoreList.add(value5) // 수압 점수
             scoreList.add(value6) // 편의시설 점수
-
 
             db = FirebaseFirestore.getInstance()
             fbAuth = FirebaseAuth.getInstance()
